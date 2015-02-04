@@ -20,7 +20,7 @@
         android:textStyle="bold"></TextView>
 
     <TextView
-        android:id="@+id/eventLocation"
+        android:id="@+id/eventAddress"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/eventName"
@@ -28,7 +28,7 @@
         android:layout_marginTop="10dp"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Event Location"
+        android:text="Event Address"
         android:textColor="#000000"
         android:textSize="14dp"></TextView>
 
@@ -36,7 +36,7 @@
         android:id="@+id/eventDate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/eventLocation"
+        android:layout_below="@+id/eventAddress"
         android:layout_marginLeft="3dp"
         android:layout_marginTop="10dp"
         android:ellipsize="end"

@@ -1,31 +1,38 @@
 package com.paypal.first.singaporeevents;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.android.gms.plus.model.people.Person;
 import com.google.common.base.Predicate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 
-public class EventsListActivity extends ActionBarActivity {
+public class EventsListActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+
+    private static final String TAG = EventsListActivity.class.getName();
+
+    private List<Event> eventList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_events_list);
 
-        EventUtility.querySingaporeEvents(new Predicate<List<Event>>() {
+        final ListView eventListView = (ListView) findViewById(R.id.listView);
+        eventListView.setOnItemClickListener(this);
+
+        eventList = EventUtility.querySingaporeEvents(new Predicate<List<Event>>() {
             @Override
             public boolean apply(@Nullable List<Event> eventsList) {
-                ListView eventListView = (ListView) findViewById(R.id.listView);
                 EventListAdapter adapter = new EventListAdapter(EventsListActivity.this, R.layout.event_layout, eventsList);
                 eventListView.setAdapter(adapter);
                 return Boolean.TRUE;
@@ -53,5 +60,15 @@ public class EventsListActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Event event = eventList.get(position);
+        if (event.address.isPresent()) {
+            Intent intent = new Intent(this, EventMapActivity.class);
+            intent.putExtra("event", event);
+            startActivity(intent);
+        }
     }
 }

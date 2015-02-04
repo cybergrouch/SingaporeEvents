@@ -37,12 +37,12 @@ public class EventListAdapter extends ArrayAdapter<Event> {
         }
         Event event = events.get(position);
         TextView eventNameView = (TextView) view.findViewById(R.id.eventName);
-        TextView eventLocationView = (TextView) view.findViewById(R.id.eventLocation);
+        TextView eventAddressView = (TextView) view.findViewById(R.id.eventAddress);
         TextView eventDateTime = (TextView) view.findViewById(R.id.eventDate);
 
         eventNameView.setText(event.name.or(""));
 
-        eventLocationView.setText(event.location.or(""));
+        eventAddressView.setText(event.address.or(""));
 
         if (!event.dateTime.isPresent()) {
             eventDateTime.setText("");
