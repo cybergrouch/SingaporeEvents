@@ -8,8 +8,8 @@ import android.util.Pair;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicate;
@@ -80,8 +80,19 @@ public class EventMapActivity extends FragmentActivity {
                 if (eventOptional.isPresent() && eventOptional.get().location.isPresent()) {
                     Event event = eventOptional.get();
                     Pair<Double, Double> location = event.location.get();
-                    Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(location.first, location.second)).title(event.name.or("Unnamed Event")));
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 14));
+
+                    mMap.setBuildingsEnabled(true);
+                    mMap.setIndoorEnabled(true);
+                    mMap.getUiSettings().setAllGesturesEnabled(true);
+                    LatLng markerLoc = new LatLng(location.first, location.second);
+                    final CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(markerLoc)
+                            .zoom(14)                   // Sets the zoom
+                            .tilt(30)                   // Sets the tilt of the camera to 30 degrees
+                            .build();
+                    mMap.addMarker(new MarkerOptions().position(markerLoc).title(event.name.or("Unnamed Event")).snippet(event.address.or("Unknown Address")));
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+
                     return Boolean.TRUE;
                 }
                 return Boolean.FALSE;
